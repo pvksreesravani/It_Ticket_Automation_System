@@ -1,0 +1,14 @@
+runtime: python39  # or python311 depending on your version
+env: flex
+
+entrypoint: gunicorn -b :$PORT IT_ticket_system.wsgi
+
+runtime_config:
+  operating_system: ubuntu22
+
+handlers:
+- url: /static
+  static_dir: staticfiles/
+
+- url: /.*
+  script: auto

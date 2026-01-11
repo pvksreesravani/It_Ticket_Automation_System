@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Technician Dashboard | IT Support{% endblock %}
+
+{% block content %}
+<style>
+    .tech-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .tech-header-section {
+        margin-bottom: 25px;
+    }
+
+    .tech-title {
+        font-size: 2rem;
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    /* Table Styling to match your image */
+    .ticket-table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #e2e8f0;
+    }
+
+    .ticket-table thead {
+        background-color: #1a202c; /* Dark header like in image */
+        color: white;
+    }
+
+    .ticket-table th, .ticket-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border: 1px solid #e2e8f0;
+    }
+
+    .ticket-table tbody tr:nth-child(even) {
+        background-color: #f8fafc;
+    }
+    .ticket-table td:last-child {
+    white-space: nowrap; /* Prevents the button text from breaking into two lines */
+    text-align: center;
+    width: 120px;       /* Ensures the column has enough space for the button */
+}
+
+    /* Action Button */
+    .btn-update {
+        background-color: #2563eb;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-update:hover {
+        background-color: #1d4ed8;
+    }
+</style>
+
+<div class="tech-container">
+    <div class="tech-header-section">
+        <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 5px;">Technician Dashboard</p>
+        <h1 class="tech-title">Technician Dashboard</h1>
+    </div>
+
+    <table class="ticket-table">
+        <thead>
+            <tr>
+                <th style="width: 50px;">ID</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in tickets %}
+            <tr>
+                <td>#{{ ticket.id }}</td>
+                <td>{{ ticket.title }}</td>
+                <td>{{ ticket.category|title }}</td>
+                <td>{{ ticket.priority|title }}</td>
+                <td>{{ ticket.status }}</td>
+                <td>
+                    <a href="{% url 'ticket_detail' ticket.pk %}" class="btn-update">Update Status</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align: center; padding: 40px; color: #64748b;">
+                    No tickets assigned to the system.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends 'tickets/base.html' %}
+
+{% block title %}My Tickets - IT Ticket Automation System{% endblock %}
+
+{% block content %}
+<style>
+    /* 1. Page Layout */
+    .tickets-container {
+        max-width: 1000px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    .page-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 1.5rem;
+    }
+
+    /* 2. Table Container Styling */
+    .table-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+    }
+
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 0;
+    }
+
+    .custom-table th {
+        background-color: #f8fafc;
+        padding: 1rem;
+        font-weight: 700;
+        color: #475569;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        text-align: left;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .custom-table td {
+        padding: 1.25rem 1rem;
+        vertical-align: middle;
+        border-bottom: 1px solid #f1f5f9;
+        color: #1e293b;
+    }
+
+    /* 3. Fixed Status & Priority Pills (No Stretching) */
+    .status-pill, .priority-pill {
+        display: inline-block; /* Prevents the pill from stretching wide */
+        padding: 4px 14px;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        text-align: center;
+        min-width: 90px;
+        line-height: 1.2;
+    }
+
+    /* Status Bar Colors */
+    .status-open { background-color: #dcfce7; color: #166534; border-left: 3px solid #22c55e; } 
+    .status-in_progress { background-color: #dbeafe; color: #1e40af; border-left: 3px solid #3b82f6; }
+    .status-closed { background-color: #f1f5f9; color: #475569; border-left: 3px solid #94a3b8; }
+
+    /* Priority Pill Colors */
+    .priority-critical { background-color: #fee2e2; color: #991b1b; }
+    .priority-high { background-color: #ffedd5; color: #9a3412; }
+    .priority-medium { background-color: #e0f2fe; color: #075985; }
+    .priority-low { background-color: #f3f4f6; color: #374151; }
+</style>
+
+<div class="tickets-container">
+    <h2 class="page-title">My Tickets</h2>
+    
+    {% if tickets %}
+    <div class="table-card">
+        <div class="table-responsive">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Status</th>
+                        <th>Priority</th>
+                        <th>Created At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ticket in tickets %}
+                    <tr>
+                        <td style="font-weight: 600;">{{ ticket.title }}</td>
+                        <td>
+                            <span class="status-pill status-{{ ticket.status|lower }}">
+                                {{ ticket.get_status_display|default:ticket.status|title }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="priority-pill priority-{{ ticket.priority|lower }}">
+                                {{ ticket.get_priority_display|default:ticket.priority|title }}
+                            </span>
+                        </td>
+                        <td style="color: #64748b;">{{ ticket.created_at|date:"M d, Y" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div style="text-align: center; padding: 4rem 2rem; background: white; border-radius: 12px; border: 2px dashed #e2e8f0;">
+        <p style="color: #64748b; margin-bottom: 1.5rem;">No active support tickets found.</p>
+        <a href="{% url 'create_ticket' %}" style="background: #2563eb; color: white; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">New Ticket</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

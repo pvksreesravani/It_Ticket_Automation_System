@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard | IT Support{% endblock %}
+
+{% block content %}
+<style>
+    /* 1. Header & Grid Layout */
+    .dashboard-header { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        margin-bottom: 2rem; 
+        padding-bottom: 1rem; 
+        border-bottom: 1px solid #e2e8f0; 
+    }
+    .header-actions { display: flex; gap: 10px; }
+    .ticket-grid { 
+        display: grid; 
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+        gap: 1.5rem; 
+    }
+
+    /* 2. The Ticket Card Structure */
+    .ticket-card { 
+        background: white; 
+        border: 1px solid #e2e8f0; 
+        border-radius: 12px; 
+        padding: 1.5rem; 
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+        /* Default Left Bar Color */
+        border-left: 6px solid #cbd5e1; 
+        transition: transform 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; /* Ensures elements align left and don't stretch */
+    }
+    
+    /* Specific left-bar colors matching status */
+    .card-open { border-left-color: #22c55e !important; }
+    .card-in_progress { border-left-color: #3b82f6 !important; }
+    .card-closed { border-left-color: #94a3b8 !important; }
+
+    /* 3. The Status Pill (Compact and colored) */
+    .status-pill { 
+        display: inline-block; /* CRITICAL: Prevents stretching */
+        padding: 4px 14px; 
+        border-radius: 20px; /* Makes it round */
+        font-size: 0.7rem; 
+        font-weight: 800; 
+        text-transform: uppercase; 
+        letter-spacing: 0.05em;
+        margin-bottom: 1rem;
+    }
+    
+    /* Pill Background Colors */
+    .status-open { background: #dcfce7; color: #166534; }
+    .status-in_progress { background: #dbeafe; color: #1e40af; }
+    .status-closed { background: #f1f5f9; color: #475569; }
+
+    /* 4. Buttons */
+    .btn-primary { background: #2563eb; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+    .btn-secondary { background: #f8fafc; color: #334155; padding: 10px 20px; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; font-weight: 600; }
+
+    /* Typography */
+    .ticket-title { margin: 0 0 10px 0; color: #1e293b; font-size: 1.1rem; font-weight: 700; }
+    .ticket-desc { color: #64748b; font-size: 0.9rem; line-height: 1.5; margin: 0; }
+</style>
+
+<div class="dashboard-header">
+    <h2 style="font-size: 1.5rem; font-weight: bold; color: #0f172a;">Your Support Tickets</h2>
+    <div class="header-actions">
+        <a href="{% url 'my_tickets' %}" class="btn-secondary">My Tickets</a>
+        <a href="{% url 'create_ticket' %}" class="btn-primary">New Ticket</a>
+    </div>
+</div>
+
+<div class="ticket-grid">
+    {% for ticket in tickets %}
+    <div class="ticket-card card-{{ ticket.status|lower }}">
+        
+        <div class="status-pill status-{{ ticket.status|lower }}">
+            {{ ticket.get_status_display|default:ticket.status|title }}
+        </div>
+
+        <h3 class="ticket-title">{{ ticket.title }}</h3>
+        <p class="ticket-desc">{{ ticket.description|truncatewords:15 }}</p>
+    </div>
+    {% empty %}
+    <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 2rem; background: white; border-radius: 12px; border: 2px dashed #e2e8f0;">
+        <p style="color: #64748b; margin-bottom: 1.5rem;">No active tickets found.</p>
+        <a href="{% url 'create_ticket' %}" class="btn-primary">Raise Your First Ticket</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
