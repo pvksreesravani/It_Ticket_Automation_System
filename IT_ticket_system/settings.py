@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     
     # Your Internal App
-    'tickets',
+    'tickets.apps.TicketsConfig',
 ]
 
 # Required for django-allauth
