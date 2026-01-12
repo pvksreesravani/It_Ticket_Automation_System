@@ -1,3 +1,14 @@
-*.sqlite3
+# Environments
 .venv/
+venv/
+env/
+
+# Python & Django
+*.pyc
 __pycache__/
+db.sqlite3
+staticfiles/
+.env
+
+# Google Cloud (since you have app.yaml)
+.gcloud/
