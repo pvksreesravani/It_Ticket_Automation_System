@@ -138,3 +138,15 @@ def get_site_id():
         return 1
 
 SITE_ID = get_site_id()
+# --- AT THE VERY BOTTOM OF settings.py ---
+
+# Safe SITE_ID for Vercel In-Memory DB
+if 'VERCEL' in os.environ:
+    SITE_ID = 1
+else:
+    # On your local computer, try to get the real ID
+    try:
+        from django.contrib.sites.models import Site
+        SITE_ID = Site.objects.get_or_create(id=1, defaults={'domain': '127.0.0.1:8000', 'name': 'Local'})[0].id
+    except:
+        SITE_ID = 1
