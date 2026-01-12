@@ -1,12 +1,6 @@
 import os
 from pathlib import Path
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',
-    }
-}
 # 1. BASE DIRECTORY
 # This must stay at the top so other settings can use it
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -73,12 +67,21 @@ TEMPLATES = [
 WSGI_APPLICATION = 'IT_ticket_system.wsgi.application'
 
 # 4. DATABASE
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# 4. DATABASE
+if 'VERCEL' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # 5. AUTHENTICATION CONFIGURATION
 AUTHENTICATION_BACKENDS = [
