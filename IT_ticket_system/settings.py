@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # 2. SECURITY SETTINGS
 SECRET_KEY = 'django-insecure-6elc4hgz$*kdgma7(@$9r$d3(b(^(n#*13re1$6o@p8f08!h_x'
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.vercel.app', 'now.sh', '127.0.0.1', 'localhost']
 
 # 3. APPLICATION DEFINITION
 INSTALLED_APPS = [
