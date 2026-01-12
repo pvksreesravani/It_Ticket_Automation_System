@@ -1,22 +1,22 @@
 import os
-import sys
+import django
 from django.core.wsgi import get_wsgi_application
+from django.core.management import call_command
 
+# Set the settings module
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'IT_ticket_system.settings')
 
-# 1. Initialize Django
-application = get_wsgi_application()
+# Initialize Django so we can use models
+django.setup()
 
-# 2. FORCE the migration
-from django.core.management import call_command
+# Build the database in RAM immediately
 try:
-    # Use interactive=False instead of --noinput
     call_command('migrate', interactive=False)
-    
-    # 3. Create Site record
     from django.contrib.sites.models import Site
     Site.objects.get_or_create(id=1, defaults={'domain': 'vercel.app', 'name': 'Vercel'})
 except Exception as e:
-    print(f"Migration check: {e}")
+    print(f"Startup Database Error: {e}")
 
+# Create the final application object for Vercel
+application = get_wsgi_application()
 app = application
