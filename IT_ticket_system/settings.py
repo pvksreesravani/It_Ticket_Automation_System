@@ -128,3 +128,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # 9. DEFAULT PRIMARY KEY FIELD
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Force Site ID but prevent database lookup during initialization
+from django.contrib.sites.models import Site
+
+def get_site_id():
+    try:
+        return Site.objects.get_or_create(id=1, defaults={'domain': 'vercel.app', 'name': 'Vercel'})[0].id
+    except:
+        return 1
+
+SITE_ID = get_site_id()
