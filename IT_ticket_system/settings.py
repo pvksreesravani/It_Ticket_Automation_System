@@ -1,6 +1,13 @@
 import os
 from pathlib import Path
+import dj_database_url
 
+DATABASES = {
+    'default': dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600
+    )
+}
 # 1. BASE DIRECTORY
 # This must stay at the top so other settings can use it
 BASE_DIR = Path(__file__).resolve().parent.parent

@@ -1,17 +1,10 @@
-"""
-WSGI config for IT_ticket_system project.
-
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/6.0/howto/deployment/wsgi/
-"""
-
 import os
-
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'IT_ticket_system.settings')
 
+# This line tells Vercel to build your database tables on startup
+os.system("python manage.py migrate")
+
 application = get_wsgi_application()
-app=application
+app = application
